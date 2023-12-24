@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>QueerSphere: Skule's LGBTQ+ Club</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+    <link rel="stylesheet" href="css/styles.css">
+    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Montserrat">
+    
+      <link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <style>
+      body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
+      .w3-bar,h1,button {font-family: "Montserrat", sans-serif}
+      .fa-anchor,.fa-coffee {font-size:200px}
+    </style>
+
+    <script
+      src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
+    </script>
+  </head>
+
+  <body>
+    <!-- Navbar -->
+    <div id="navbar"> </div>
+
+    <script>
+      $.get("navbar.html", function(data){
+          $("#navbar").replaceWith(data);
+      });
+    </script>
+
+    <!-- First Grid -->
+    <div class="w3-row-padding w3-padding-64 w3-container">
+      <div class="w3-content">
+        <div class="w3-twothird">
+          <h1>Resources</h1>
+          <div class="cards">          
+            <article class="card">
+              <header>
+                <h2>heading</h2>
+              </header>
+              <img src="img/balloons.jpg" alt="Hot air balloons">
+              <div class="content">
+                <p>content content content content content content content content content content content content content content content content </p>
+              </div>
+              <footer>footer</footer>
+            </article>
+
+            <article class="card">
+              <header>
+                <h2>heading</h2>
+              </header>
+              <img src="img/balloons.jpg" alt="Hot air balloons">
+              <div class="content">
+                <p>content content content content content content content content content content content content content content content content </p>
+              </div>
+              <footer>footer</footer>
+            </article>
+
+            <article class="card">
+              <header>
+                <h2>heading</h2>
+              </header>
+              <img src="img/balloons.jpg" alt="Hot air balloons">
+              <div class="content">
+                <p>content content content content content content content content content content content content content content content content </p>
+              </div>
+              <footer>footer</footer>
+            </article>
+
+            <article class="card">
+              <header>
+                <h2>heading</h2>
+              </header>
+              <img src="img/balloons.jpg" alt="Hot air balloons">
+              <div class="content">
+                <p>content content content content content content content content content content content content content content content content </p>
+              </div>
+              <footer>footer</footer>
+            </article>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer"> </div>
+
+    <script>
+      $.get("footer.html", function(data){
+        $("#footer").replaceWith(data);
+      });
+    </script>
+
+    <script>
+// Used to toggle the menu on small screens when clicking on the menu button
+function myFunction() {
+  var x = document.getElementById("navDemo");
+  if (x.className.indexOf("w3-show") == -1) {
+    x.className += " w3-show";
+  } else { 
+    x.className = x.className.replace(" w3-show", "");
+  }
+}
+</script>
+  </body>
+</html>
