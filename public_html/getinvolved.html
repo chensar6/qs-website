@@ -17,12 +17,14 @@
       src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
     </script>
 
+    <!-- Script to generate navbar -->
     <script>
       $.get("navbar.html", function(data){
           $("#navbar").replaceWith(data);
       });
     </script>
 
+    <!-- Script to generate footer -->  
     <script>
       $.get("footer.html", function(data){
         $("#footer").replaceWith(data);
