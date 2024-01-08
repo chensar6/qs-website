@@ -67,26 +67,33 @@
             const card = document.createElement('article');
             card.classList.add('card');
 
-            const border = document.createElement('border-top');
-
+            const border = document.createElement('border');    
+            
             const link = document.createElement('a');
-            link.href = row[1]; // Assuming the link is in the second column
-            link.textContent = row[0]; // Assuming the name is in the first column
-            const h2 = document.createElement('h2');
-            h2.appendChild(link);
+            link.href = row[1];
 
-            const content = document.createElement('div');
-            content.classList.add('content');
-            const description = document.createElement('p');
-            description.textContent = row[2] || ''; // Assuming the description is in the third column
-            content.appendChild(description);
+            const h2 = document.createElement('h2');
+            h2.textContent = row[0];
+
+            const content = document.createElement('p');
+            content.classList.add('content')
+            content.textContent = row[2] || '';
+
+            const scrollContainer = document.createElement('div');
+            scrollContainer.classList.add('scroll-container');
+            scrollContainer.onclick = function() {
+              window.open(link.href, '_blank');
+            };
+
+            scrollContainer.appendChild(h2);
+            scrollContainer.appendChild(content);
+            scrollContainer.append(link)
 
             const footer = document.createElement('footer');
             footer.textContent = 'Tags:';
 
             card.appendChild(border);
-            card.appendChild(h2);
-            card.appendChild(content);
+            card.appendChild(scrollContainer);
             card.appendChild(footer);
 
             cardsContainer.appendChild(card);
