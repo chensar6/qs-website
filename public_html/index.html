@@ -6,23 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
-    
     <link rel="stylesheet"
       href="https://fonts.googleapis.com/css?family=Montserrat">
-    
-      <link rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    
-    <style>
-      body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
-      .w3-bar,h1,button {font-family: "Montserrat", sans-serif}
-      .fa-anchor,.fa-coffee {font-size:200px}
-    </style>
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/styles.css">
 
     <script
       src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
+    </script>
+
+    <script>
+      $.get("navbar.html", function(data){
+        $("#navbar").replaceWith(data);
+      });
     </script>
   </head>
 
@@ -30,17 +28,11 @@
     <!-- Navbar -->
     <div id="navbar"> </div>
 
-    <script>
-      $.get("navbar.html", function(data){
-        $("#navbar").replaceWith(data);
-      });
-    </script>
-
     <!-- Header -->
-    <header class="w3-container w3-purple w3-center" style="padding:60px 16px"><meta
+    <header class="w3-container qs-purple w3-center" style="padding:60px 16px"><meta
         http-equiv="Content-Type" content="text/html; charset=UTF-8">
-      <h1 class="w3-margin w3-jumbo">QueerSphere</h1>
-      <p class="w3-xlarge">UofT's EngiQueers Member</p>
+      <h1 class="w3-margin w3-jumbo w3-text-white">QueerSphere</h1>
+      <p class="w3-xlarge w3-text-white">The University of Toronto Engineering 2SLGBTQIA+ Student Group</p>
       <!--<button class="w3-button w3-black w3-padding-large w3-large w3-margin-top">Get Started</button>-->
     </header>
 
@@ -77,19 +69,5 @@
         $("#footer").replaceWith(data);
       });
     </script>
-
-
-    <script>
-// Used to toggle the menu on small screens when clicking on the menu button
-function myFunction() {
-  var x = document.getElementById("navDemo");
-  if (x.className.indexOf("w3-show") == -1) {
-    x.className += " w3-show";
-  } else { 
-    x.className = x.className.replace(" w3-show", "");
-  }
-}
-</script>
-
   </body>
 </html>

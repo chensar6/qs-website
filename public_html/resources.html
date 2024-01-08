@@ -2,116 +2,133 @@
 <html lang="en">
   <head>
     <title>QueerSphere: Skule's LGBTQ+ Club</title>
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-
     <link rel="stylesheet" href="css/styles.css">
-    
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
     
-    <link rel="stylesheet"
-      href="https://fonts.googleapis.com/css?family=Montserrat">
-    
-      <link rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    
-    <style>
-      body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
-      .w3-bar,h1,button {font-family: "Montserrat", sans-serif}
-      .fa-anchor,.fa-coffee {font-size:200px}
-    </style>
-
-    <script
-      src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
-    </script>
-  </head>
-
-  <body>
-    <!-- Navbar -->
-    <div id="navbar"> </div>
-
+    <!-- Script to generate navbar -->
     <script>
       $.get("navbar.html", function(data){
           $("#navbar").replaceWith(data);
       });
     </script>
 
-    <!-- First Grid -->
-    <div class="w3-row-padding w3-padding-64 w3-container">
-      <div class="w3-content">
-        <div class="w3-twothird">
-          <h1>Resources</h1>
-          <div class="cards">          
-            <article class="card">
-              <header>
-                <h2>heading</h2>
-              </header>
-              <img src="img/balloons.jpg" alt="Hot air balloons">
-              <div class="content">
-                <p>content content content content content content content content content content content content content content content content </p>
-              </div>
-              <footer>footer</footer>
-            </article>
+    <!-- Script to generate cards from .xlsx -->
+    <script>
+      // Read Excel file using SheetJS
+      function readExcel(file) {
+          return new Promise((resolve, reject) => {
+              const reader = new FileReader();
 
-            <article class="card">
-              <header>
-                <h2>heading</h2>
-              </header>
-              <img src="img/balloons.jpg" alt="Hot air balloons">
-              <div class="content">
-                <p>content content content content content content content content content content content content content content content content </p>
-              </div>
-              <footer>footer</footer>
-            </article>
+              reader.onload = (e) => {
+                  const data = new Uint8Array(e.target.result);
+                  const workbook = XLSX.read(data, { type: 'array' });
+                  const sheetName = workbook.SheetNames[0];
+                  const sheet = workbook.Sheets[sheetName];
+                  const excelData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+                  resolve(excelData);
+              };
 
-            <article class="card">
-              <header>
-                <h2>heading</h2>
-              </header>
-              <img src="img/balloons.jpg" alt="Hot air balloons">
-              <div class="content">
-                <p>content content content content content content content content content content content content content content content content </p>
-              </div>
-              <footer>footer</footer>
-            </article>
+              reader.onerror = (e) => {
+                  reject(e);
+              };
 
-            <article class="card">
-              <header>
-                <h2>heading</h2>
-              </header>
-              <img src="img/balloons.jpg" alt="Hot air balloons">
-              <div class="content">
-                <p>content content content content content content content content content content content content content content content content </p>
-              </div>
-              <footer>footer</footer>
-            </article>
-            
-          </div>
-        </div>
-      </div>
-    </div>
+              reader.readAsArrayBuffer(file);
+          });
+      }
 
-    <!-- Footer -->
-    <div id="footer"> </div>
+      // Parse Excel data and create cards
+      function parseExcel(excelData) {
 
+        const cardsContainer = document.getElementById('cardContainer');
+        let emptyRowEncountered = false;
+
+        excelData.forEach((row, index) => {
+
+          // Skip the header row
+          if (index === 0) return;
+
+          // Check if all cells in the row are empty
+          const isRowEmpty = row.every(cell => !cell && cell !== 0 && cell !== false);
+
+          if (isRowEmpty) {
+            emptyRowEncountered = true;
+          } else {
+            // If an empty row was encountered before, stop creating cards
+            if (emptyRowEncountered) return;
+
+            const card = document.createElement('article');
+            card.classList.add('card');
+
+            const image = document.createElement('img');
+            image.src = 'img/purpleGradient.png'; // You may replace this with an actual image path
+            image.alt = 'Purple Gradient';
+
+            const link = document.createElement('a');
+            link.href = row[1]; // Assuming the link is in the second column
+            link.textContent = row[0]; // Assuming the name is in the first column
+            const h2 = document.createElement('h2');
+            h2.appendChild(link);
+
+            const content = document.createElement('div');
+            content.classList.add('content');
+            const description = document.createElement('p');
+            description.textContent = row[2] || ''; // Assuming the description is in the third column
+            content.appendChild(description);
+
+            const footer = document.createElement('footer');
+            footer.textContent = 'Tags:';
+
+            card.appendChild(image);
+            card.appendChild(h2);
+            card.appendChild(content);
+            card.appendChild(footer);
+
+            cardsContainer.appendChild(card);
+
+          }
+        });
+      }
+
+      // Hardcoded path to "text/resources.xlsx"
+      const excelPath = 'text/resources.xlsx';
+
+      // Fetch Excel file and parse data
+      fetch(excelPath)
+          .then(response => response.blob())
+          .then(readExcel)
+          .then(parseExcel)
+          .catch(error => console.error('Error reading Excel:', error));
+    </script>
+
+    <!-- Script to generate footer -->
     <script>
       $.get("footer.html", function(data){
         $("#footer").replaceWith(data);
       });
     </script>
+  </head>
 
-    <script>
-// Used to toggle the menu on small screens when clicking on the menu button
-function myFunction() {
-  var x = document.getElementById("navDemo");
-  if (x.className.indexOf("w3-show") == -1) {
-    x.className += " w3-show";
-  } else { 
-    x.className = x.className.replace(" w3-show", "");
-  }
-}
-</script>
+  <body>
+    <!-- Navbar -->
+    <div id="navbar"> </div>
+    <!-- First Grid -->
+    <div class="w3-row-padding w3-padding-64 w3-container">
+      <div class="w3-content">
+        <div class="w3-twothird">
+          <h1>Resources</h1>
+          <div class="cards" id="cardContainer"></div>
+        </div>
+      </div>
+    </div>
+    <!-- Footer -->
+    <div id="footer"> </div>
   </body>
 </html>
