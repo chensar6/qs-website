@@ -16,17 +16,23 @@
     <script
       src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
     </script>
+
+    <script>
+      $.get("navbar.html", function(data){
+          $("#navbar").replaceWith(data);
+      });
+    </script>
+
+    <script>
+      $.get("footer.html", function(data){
+        $("#footer").replaceWith(data);
+      });
+    </script>
   </head>
 
   <body>
     <!-- Navbar -->
     <div id="navbar"> </div>
-
-    <script>
-  $.get("navbar.html", function(data){
-      $("#navbar").replaceWith(data);
-  });
-</script>
 
     <!-- Header -->
     <header class="w3-container w3-purple w3-center" style="padding:128px 16px"><meta
@@ -66,11 +72,5 @@
 
     <!-- Footer -->
     <div id="footer"> </div>
-
-    <script>
-      $.get("footer.html", function(data){
-        $("#footer").replaceWith(data);
-      });
-    </script>
   </body>
 </html>

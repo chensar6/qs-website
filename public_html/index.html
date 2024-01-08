@@ -22,6 +22,12 @@
         $("#navbar").replaceWith(data);
       });
     </script>
+
+    <script>
+      $.get("footer.html", function(data){
+        $("#footer").replaceWith(data);
+      });
+    </script>
   </head>
 
   <body>
@@ -63,11 +69,5 @@
 
     <!-- Footer -->
     <div id="footer"> </div>
-
-    <script>
-      $.get("footer.html", function(data){
-        $("#footer").replaceWith(data);
-      });
-    </script>
   </body>
 </html>
