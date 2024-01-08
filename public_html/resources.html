@@ -33,7 +33,13 @@
                   const sheetName = workbook.SheetNames[0];
                   const sheet = workbook.Sheets[sheetName];
                   const excelData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
-                  resolve(excelData);
+                  const dataWithoutHeader = excelData.slice(1);
+
+                  const filteredData = dataWithoutHeader.filter(row => row[0] !== undefined && row[0] !== '');
+
+                  filteredData.sort((a, b) => a[0].localeCompare(b[0]));
+
+                  resolve(filteredData);
               };
 
               reader.onerror = (e) => {
