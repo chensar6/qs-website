@@ -115,3 +115,23 @@ img {
   border-bottom-right-radius: 0.63rem;
   position: relative; /* Add this line */
 }
+
+.tag-container {
+  display: inline-block;
+}
+
+.tag {
+  font-size: 12px;
+  display: inline-block;
+  background-color: #9a9a9a; /* Background color of the pill */
+  color: #fff; /* Text color of the pill */
+  padding: 3px 10px; /* Adjust padding as needed */
+  border-radius: 20px; /* Adjust border-radius to control the pill shape */
+  margin-left: 3px;
+  margin-top: 3px;
+  cursor: pointer;
+}
+
+.tag:last-child {
+  margin-right: 0; /* Remove margin from the last tag to avoid extra space */
+}

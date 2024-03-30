@@ -58,16 +58,13 @@
 
         excelData.forEach((row, index) => {
 
-          // Skip the header row
           if (index === 0) return;
 
-          // Check if all cells in the row are empty
           const isRowEmpty = row.every(cell => !cell && cell !== 0 && cell !== false);
 
           if (isRowEmpty) {
             emptyRowEncountered = true;
           } else {
-            // If an empty row was encountered before, stop creating cards
             if (emptyRowEncountered) return;
 
             const card = document.createElement('article');
@@ -85,6 +82,18 @@
             content.classList.add('content')
             content.textContent = row[2] || '';
 
+            const tags = row[3] ? row[3].split(',') : []; // Split tags by comma
+
+            const tagContainer = document.createElement('div');
+            tagContainer.classList.add('tag-container');
+
+            tags.forEach(tag => {
+                const tagElement = document.createElement('span');
+                tagElement.classList.add('tag');
+                tagElement.textContent = tag.trim(); // Remove extra spaces around tags
+                tagContainer.appendChild(tagElement);
+            });
+
             const scrollContainer = document.createElement('div');
             scrollContainer.classList.add('scroll-container');
             scrollContainer.onclick = function() {
@@ -97,6 +106,7 @@
 
             const footer = document.createElement('footer');
             footer.textContent = 'Tags:';
+            footer.append(tagContainer)
 
             card.appendChild(border);
             card.appendChild(scrollContainer);
@@ -136,6 +146,9 @@
         <div class="w3-center w3-row-padding">
           <h1>Resources</h1>
         </div>
+        <div id="filters">
+          <!-- Filter options will be dynamically added here -->
+      </div>
         <div class="cards" id="cardContainer"></div>
       </div>
     </div>
