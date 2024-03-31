@@ -54,20 +54,6 @@
         window.history.pushState({path: newURL}, '', newURL); 
     }
 
-      function handleTagClick(tag) {
-        const urlParams = new URLSearchParams(window.location.search);
-        const currentTags = urlParams.getAll('tag');
-
-        if (!currentTags.includes(tag)) {
-            currentTags.push(tag);
-        } else {
-            // If the tag is already selected, remove it
-            currentTags.splice(currentTags.indexOf(tag), 1);
-        }
-
-        updateURL(currentTags);
-        filterByTags(currentTags); // Update filtering based on the selected tags
-      }
 
       function filterByTags(tags) {
         const cards = document.querySelectorAll('.card');
@@ -81,6 +67,41 @@
             }
         });
     }
+
+      function handleTagClick(tagElement, tag) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const currentTags = urlParams.getAll('tag');
+
+        if (!currentTags.includes(tag)) {
+            currentTags.push(tag);
+            tagElement.classList.add('active');
+        } else {
+            // If the tag is already selected, remove it
+            currentTags.splice(currentTags.indexOf(tag), 1);
+            tagElement.classList.remove('active');
+        }
+
+        updateURL(currentTags);
+        filterByTags(currentTags); // Update filtering based on the selected tags
+      }
+
+      function createTagElements(tags, container) {
+        container.innerHTML = '';
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const activeTags = urlParams.getAll('tag');
+
+        tags.forEach(tag => {
+            const tagElement = document.createElement('span');
+            tagElement.classList.add('tag');
+            tagElement.textContent = tag.trim();
+            if (activeTags.includes(tag.trim())) {
+                tagElement.classList.add('active'); // Add 'active' class to the selected tag
+            }
+            tagElement.addEventListener('click', () => handleTagClick(tagElement, tag.trim()));
+            container.appendChild(tagElement);
+        });
+      }
 
 
       function parseExcel(excelData) {
@@ -157,24 +178,6 @@
         allTags = Array.from(allTags);
         allTags.sort();
         createTagElements(allTags, tagSelection);
-      }
-
-      function createTagElements(tags, container) {
-        container.innerHTML = '';
-
-        const urlParams = new URLSearchParams(window.location.search);
-        const activeTag = urlParams.get('tag');
-
-        tags.forEach(tag => {
-            const tagElement = document.createElement('span');
-            tagElement.classList.add('tag');
-            tagElement.textContent = tag.trim();
-            tagElement.addEventListener('click', () => handleTagClick(tag.trim()));
-            if (tag.trim() === activeTag) {
-                tagElement.classList.add('active'); // Add 'active' class to the selected tag
-            }
-            container.appendChild(tagElement);
-        });
       }
 
       const excelPath = 'text/resources.xlsx';
