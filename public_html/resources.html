@@ -50,7 +50,7 @@
       
       function updateURL(tags) {
         const currentURL = window.location.href.split('?')[0]; 
-        const newURL = `${currentURL}${tags.length > 0 ? '?tag=' : ''}${tags.map(tag => `${encodeURIComponent(tag)}`).join('&')}`; 
+        const newURL = `${currentURL}${tags.length > 0 ? '?' : ''}${tags.map(tag => `tag=${encodeURIComponent(tag)}`).join('&')}`; 
         window.history.pushState({path: newURL}, '', newURL); 
     }
 
