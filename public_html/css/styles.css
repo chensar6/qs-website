@@ -113,7 +113,7 @@ img {
   padding: 0.5rem;
   border-bottom-left-radius: 0.63rem;
   border-bottom-right-radius: 0.63rem;
-  position: relative; /* Add this line */
+  position: relative;
 }
 
 .tag-container {

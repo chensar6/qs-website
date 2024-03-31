@@ -20,9 +20,7 @@
       });
     </script>
 
-    <!-- Script to generate cards from .xlsx -->
     <script>
-      // Read Excel file using SheetJS
       function readExcel(file) {
           return new Promise((resolve, reject) => {
               const reader = new FileReader();
@@ -49,12 +47,47 @@
               reader.readAsArrayBuffer(file);
           });
       }
+      
+      function updateURL(tags) {
+        const currentURL = window.location.href.split('?')[0]; 
+        const newURL = `${currentURL}${tags.length > 0 ? '?tag=' : ''}${tags.map(tag => `${encodeURIComponent(tag)}`).join('&')}`; 
+        window.history.pushState({path: newURL}, '', newURL); 
+    }
 
-      // Parse Excel data and create cards
+      function handleTagClick(tag) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const currentTags = urlParams.getAll('tag');
+
+        if (!currentTags.includes(tag)) {
+            currentTags.push(tag);
+        } else {
+            // If the tag is already selected, remove it
+            currentTags.splice(currentTags.indexOf(tag), 1);
+        }
+
+        updateURL(currentTags);
+        filterByTags(currentTags); // Update filtering based on the selected tags
+      }
+
+      function filterByTags(tags) {
+        const cards = document.querySelectorAll('.card');
+
+        cards.forEach(card => {
+            const cardTags = Array.from(card.querySelectorAll('.tag')).map(tag => tag.textContent.trim());
+            if (tags.every(tag => cardTags.includes(tag))) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+
+
       function parseExcel(excelData) {
 
         const cardsContainer = document.getElementById('cardContainer');
         let emptyRowEncountered = false;
+        let allTags = new Set();
 
         excelData.forEach((row, index) => {
 
@@ -82,16 +115,20 @@
             content.classList.add('content')
             content.textContent = row[2] || '';
 
-            const tags = row[3] ? row[3].split(',') : []; // Split tags by comma
+            const tags = row[3] ? row[3].split(',') : [];
 
             const tagContainer = document.createElement('div');
             tagContainer.classList.add('tag-container');
 
+            tags.sort((a, b) => a.localeCompare(b));
+
             tags.forEach(tag => {
-                const tagElement = document.createElement('span');
-                tagElement.classList.add('tag');
-                tagElement.textContent = tag.trim(); // Remove extra spaces around tags
-                tagContainer.appendChild(tagElement);
+              const tagElement = document.createElement('span');
+              tagElement.classList.add('tag');
+              tagElement.textContent = tag.trim();
+              tagElement.addEventListener('click', () => handleTagClick(tag.trim()));
+              tagContainer.appendChild(tagElement);
+              allTags.add(tag.trim());
             });
 
             const scrollContainer = document.createElement('div');
@@ -116,12 +153,32 @@
 
           }
         });
+
+        allTags = Array.from(allTags);
+        allTags.sort();
+        createTagElements(allTags, tagSelection);
       }
 
-      // Hardcoded path to "text/resources.xlsx"
+      function createTagElements(tags, container) {
+        container.innerHTML = '';
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const activeTag = urlParams.get('tag');
+
+        tags.forEach(tag => {
+            const tagElement = document.createElement('span');
+            tagElement.classList.add('tag');
+            tagElement.textContent = tag.trim();
+            tagElement.addEventListener('click', () => handleTagClick(tag.trim()));
+            if (tag.trim() === activeTag) {
+                tagElement.classList.add('active'); // Add 'active' class to the selected tag
+            }
+            container.appendChild(tagElement);
+        });
+      }
+
       const excelPath = 'text/resources.xlsx';
 
-      // Fetch Excel file and parse data
       fetch(excelPath)
           .then(response => response.blob())
           .then(readExcel)
@@ -146,9 +203,7 @@
         <div class="w3-center w3-row-padding">
           <h1>Resources</h1>
         </div>
-        <div id="filters">
-          <!-- Filter options will be dynamically added here -->
-      </div>
+        <div id="tagSelection"></div>
         <div class="cards" id="cardContainer"></div>
       </div>
     </div>
